@@ -16,7 +16,39 @@ export interface User {
 
 export type EvaluacionGIT = 'Sí' | 'No';
 
-export type EstatusEventoDefault = 'Evaluación' | 'Adjudicación' | 'Prescindido' | 'Desierto';
+export type EstatusProyecto = 
+  | 'Planificación' 
+  | 'En Licitación' 
+  | 'En Ejecución' 
+  | 'Suspendido' 
+  | 'Finalizado' 
+  | 'En Liquidación';
+
+export type EstatusEventoDefault = EstatusProyecto;
+
+export type TipoDocumentoDrive = 
+  | 'Términos de Referencia'
+  | 'Bases de Licitación'
+  | 'Contrato Administrativo'
+  | 'Planos Técnicos'
+  | 'Dictamen Técnico'
+  | 'Dictamen Financiero'
+  | 'Informe Mensual de Avance'
+  | 'Informe de Supervisión'
+  | 'Fianza de Cumplimiento'
+  | 'Acta de Recepción Definitiva'
+  | 'Documentación General';
+
+export interface GoogleDriveDocument {
+  id: string;
+  nombre: string;
+  tipo: TipoDocumentoDrive;
+  url: string; // Enlace directo a Google Drive (drive.google.com/...)
+  fecha: string;
+  tamano?: string;
+  subidoPor?: string;
+  descripcion?: string;
+}
 
 export interface AttachedDocument {
   nombre: string;
@@ -26,36 +58,62 @@ export interface AttachedDocument {
   dataUrl?: string; // Archivo base64 / blob URL para descarga y visualización
 }
 
-export interface PurchaseRecord {
+export interface ProjectRecord {
   id: string;
-  descripcion: string; // Max 200
-  f56e: string;        // Forma F56-e (ej. 00001, 00001-2026, 000001-2026)
-  f56?: string;        // Formulario F56 físico (opcional)
-  f56Documento?: AttachedDocument; // Documento físico/digital de la F56 adjunto
-  fechaSolicitud: string;   // YYYY-MM-DD
-  fechaVoBo: string;        // YYYY-MM-DD
-  fechaAutorizado: string;  // YYYY-MM-DD
-  nog: string;              // 8 digits numeric
-  fechaPublicacion: string; // YYYY-MM-DD
-  fechaOfertas: string;     // YYYY-MM-DD
-  cantidadOfertas: number;  // Numeric >= 0
-  monto: number;            // Quetzales (GTQ)
-  evaluadoGIT: EvaluacionGIT; // Sí | No
-  fechaDictamenGIT?: string; // Fecha en que se realizó el dictamen técnico por la GIT (YYYY-MM-DD)
-  fechaElaboracionOficioGIT?: string; // Fecha en que la Gerencia de Informática elaboró el oficio hacia compras (YYYY-MM-DD)
-  estatusEvento: string;    // Evaluación | Adjudicación | Prescindido | Desierto or custom
-  fechaAdjudicacion?: string; // Fecha en que se adjudicó el evento (YYYY-MM-DD)
+  codigo?: string; // Identificador único del proyecto (ej: PRJ-MICIVI-2026-001)
+  nombre?: string; // Nombre completo del proyecto
+  descripcion: string; // Resumen del alcance y objetivos
+  ministerio?: string; // Nombre del ministerio (ej: Ministerio de Comunicaciones, Infraestructura y Vivienda)
+  siglasMinisterio?: string; // CIV, MINGOB, MCD, MAGA, MINFIN, etc.
+  unidadEjecutora?: string; // Dirección General de Caminos, UCEE, etc.
+  estatus?: EstatusProyecto; // Planificación, Licitación, Ejecución, etc.
+  presupuestoAsignado?: number; // Monto asignado en Quetzales (Q)
+  presupuestoEjecutado?: number; // Monto ejecutado en Quetzales (Q)
+  avanceFisico?: number; // Porcentaje de avance físico (0 a 100%)
+  avanceFinanciero?: number; // Porcentaje de avance financiero (0 a 100%)
+  fechaInicio?: string; // YYYY-MM-DD
+  fechaFinalizacionEstimada?: string; // YYYY-MM-DD
+  fechaFinalizacionReal?: string; // YYYY-MM-DD
+  responsable?: string; // Nombre y cargo del coordinador/director del proyecto
+  contactoResponsable?: string; // Teléfono o correo de contacto
+  departamento?: string; // Departamento de Guatemala
+  municipio?: string;
+  googleDriveFolderUrl?: string; // Carpeta principal de Google Drive
+  documentosDrive?: GoogleDriveDocument[]; // Documentos vinculados en Google Drive
+  alianzaEstrategica?: string; // "FIRME - Alianzas Estratégicas", "Cooperación Multilateral", etc.
+  prioridad?: 'Alta' | 'Media' | 'Baja';
+  observaciones?: string;
+  creadoPor?: string;
+  fechaCreacion?: string;
+  modificadoPor?: string;
+  fechaModificacion?: string;
+
+  // Propiedades de retrocompatibilidad con el modelo anterior de PurchaseRecord
+  monto?: number;
+  f56e?: string;
+  f56?: string;
+  nog?: string;
+  fechaSolicitud?: string;
+  fechaVoBo?: string;
+  fechaAutorizado?: string;
+  fechaPublicacion?: string;
+  fechaOfertas?: string;
+  cantidadOfertas?: number;
+  evaluadoGIT?: EvaluacionGIT;
+  fechaDictamenGIT?: string;
+  fechaElaboracionOficioGIT?: string;
+  estatusEvento?: string;
+  fechaAdjudicacion?: string;
   areaSolicitante?: string;
   categoriaTecnologica?: string;
   dependenciaSolicitante?: string;
   modalidadCompra?: string;
   proveedorAdjudicado?: string;
-  creadoPor: string;
-  fechaCreacion: string;
-  modificadoPor?: string;
-  fechaModificacion?: string;
-  observaciones?: string;
+  f56Documento?: AttachedDocument;
 }
+
+// Alias de retrocompatibilidad
+export type PurchaseRecord = ProjectRecord;
 
 export interface CatalogItem {
   id: string;
@@ -78,6 +136,10 @@ export interface Catalog {
 export type AuditAction = 
   | 'LOGIN' 
   | 'LOGOUT' 
+  | 'CREAR_PROYECTO'
+  | 'EDITAR_PROYECTO' 
+  | 'ELIMINAR_PROYECTO' 
+  | 'VINCULAR_DOCUMENTO_DRIVE'
   | 'CREAR_COMPRA' 
   | 'EDITAR_COMPRA' 
   | 'ELIMINAR_COMPRA' 
@@ -96,7 +158,7 @@ export interface AuditLogEntry {
   usuario: string;
   rol: UserRole;
   accion: AuditAction;
-  modulo: 'Autenticación' | 'Compras' | 'Catálogos' | 'Usuarios' | 'Auditoría' | 'Reportes' | 'Sistema';
+  modulo: 'Autenticación' | 'Proyectos' | 'Compras' | 'Catálogos' | 'Usuarios' | 'Auditoría' | 'Reportes' | 'Google Drive' | 'Sistema';
   detalles: string;
   registroId?: string;
   ip: string;
@@ -114,10 +176,19 @@ export interface AppNotification {
   fecha: string;
   leida: boolean;
   enlaceId?: string;
-  categoria: 'vencimiento_oferta' | 'cambio_estatus' | 'aprobacion_vobo' | 'nuevo_registro' | 'sistema';
+  categoria: 'vencimiento_oferta' | 'cambio_estatus' | 'aprobacion_vobo' | 'nuevo_registro' | 'sistema' | 'documento_drive';
 }
 
-export type ActiveTab = 'dashboard' | 'compras' | 'catalogos' | 'auditoria' | 'usuarios' | 'reportes' | 'personalizacion' | 'correo';
+export type ActiveTab = 
+  | 'dashboard' 
+  | 'compras' // Mantener alias interno para pantalla de proyectos
+  | 'estadisticas'
+  | 'catalogos' 
+  | 'auditoria' 
+  | 'usuarios' 
+  | 'reportes' 
+  | 'personalizacion' 
+  | 'correo';
 
 export interface GmailConfig {
   userEmail: string;
@@ -137,11 +208,11 @@ export interface GmailConfig {
   lastTestError?: string;
 }
 
-export type SystemThemeId = 'azul_persia_acero' | 'slate_ambar' | 'azul_judicial' | 'grafito_esmeralda';
+export type SystemThemeId = 'firme_carmesi' | 'azul_persia_acero' | 'slate_ambar' | 'azul_judicial' | 'grafito_esmeralda';
 
 export interface CustomLogoConfig {
   type: 'preset' | 'custom_image';
-  presetId?: 'oj_vector' | 'oj_monogram' | 'escudo_nacional';
+  presetId?: 'firme_3d' | 'oj_vector' | 'oj_monogram' | 'escudo_nacional';
   imageUrl?: string;
   title: string;
   subtitle: string;

@@ -16,6 +16,7 @@ import { UsersView } from './components/UsersView';
 import { ReportsView } from './components/ReportsView';
 import { CustomizationView } from './components/CustomizationView';
 import { EmailConfigView } from './components/EmailConfigView';
+import { MinistryStatisticsView } from './components/MinistryStatisticsView';
 import { LoginModal } from './components/LoginModal';
 import { LoginView } from './components/LoginView';
 import { AdminAccessGate } from './components/AdminAccessGate';
@@ -69,6 +70,7 @@ const AppContent: React.FC = () => {
           <div className="max-w-7xl mx-auto w-full">
             {activeTab === 'dashboard' && <DashboardView />}
             {activeTab === 'compras' && <PurchasesView />}
+            {activeTab === 'estadisticas' && <MinistryStatisticsView />}
             {activeTab === 'reportes' && <ReportsView />}
             
             {/* Control & Auditoría */}
@@ -131,15 +133,15 @@ const AppContent: React.FC = () => {
           </div>
         </main>
 
-        {/* Pie de Página Institucional (Professional Polish) */}
-        <footer className="h-8 bg-slate-200 px-6 flex items-center justify-between text-[10px] font-bold text-slate-500 uppercase tracking-widest flex-shrink-0 print:hidden">
-          <span>© 2026 Organismo Judicial de Guatemala - Gerencia de Informática</span>
+        {/* Pie de Página Institucional FIRME */}
+        <footer className="h-8 bg-slate-200 px-6 flex items-center justify-between text-[10px] font-bold text-slate-600 uppercase tracking-wider flex-shrink-0 print:hidden">
+          <span>Alianzas Estratégicas - FIRME • Sistema de Control de Proyectos</span>
           <div className="flex items-center space-x-4">
             <span className="flex items-center">
               <span className="w-2 h-2 bg-emerald-500 rounded-full mr-1.5 animate-pulse" />
-              Sesión Verificada
+              Sincronizado con Firestore
             </span>
-            <span>v1.0.5-OJ-SEC</span>
+            <span className="text-slate-400">14 Ministerios de Guatemala</span>
           </div>
         </footer>
 

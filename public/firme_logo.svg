@@ -1,0 +1,362 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 850" width="100%" height="100%">
+  <defs>
+    <!-- Filtro de sombra y brillo 3D -->
+    <filter id="firme3dDropShadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="16" stdDeviation="14" flood-color="#2a0004" flood-opacity="0.75" />
+    </filter>
+    <filter id="firmeTextShadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="8" stdDeviation="6" flood-color="#3d0208" flood-opacity="0.85" />
+    </filter>
+
+    <!-- Gradiente del bisel exterior del hexágono -->
+    <linearGradient id="firmeOuterBevel" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#d62839" />
+      <stop offset="35%" stop-color="#a6101f" />
+      <stop offset="70%" stop-color="#700610" />
+      <stop offset="100%" stop-color="#400207" />
+    </linearGradient>
+
+    <!-- Gradiente del fondo del hexágono -->
+    <radialGradient id="firmeHexBg" cx="42%" cy="38%" r="65%">
+      <stop offset="0%" stop-color="#ab1321" />
+      <stop offset="55%" stop-color="#880915" />
+      <stop offset="85%" stop-color="#66040e" />
+      <stop offset="100%" stop-color="#420108" />
+    </radialGradient>
+
+    <!-- Brillo superior del hexágono -->
+    <linearGradient id="firmeTopSheen" x1="20%" y1="0%" x2="80%" y2="60%">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.38" />
+      <stop offset="40%" stop-color="#ffffff" stop-opacity="0.08" />
+      <stop offset="100%" stop-color="#ffffff" stop-opacity="0" />
+    </linearGradient>
+
+    <!-- Gradiente del caballo blanco 3D -->
+    <linearGradient id="horseBodyGrad" x1="20%" y1="10%" x2="80%" y2="90%">
+      <stop offset="0%" stop-color="#ffffff" />
+      <stop offset="45%" stop-color="#f8fafc" />
+      <stop offset="75%" stop-color="#e2e8f0" />
+      <stop offset="100%" stop-color="#cbd5e1" />
+    </linearGradient>
+
+    <!-- Sombras anatómicas del caballo -->
+    <linearGradient id="horseMuscleDark" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#64748b" stop-opacity="0.6" />
+      <stop offset="100%" stop-color="#334155" stop-opacity="0.85" />
+    </linearGradient>
+
+    <!-- Gradiente de texto FIRMES 3D -->
+    <linearGradient id="textGradTop" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#f87171" />
+      <stop offset="25%" stop-color="#dc2626" />
+      <stop offset="65%" stop-color="#991b1b" />
+      <stop offset="100%" stop-color="#55030a" />
+    </linearGradient>
+    <linearGradient id="textBevelSide" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#b91c1c" />
+      <stop offset="50%" stop-color="#ef4444" />
+      <stop offset="100%" stop-color="#7f1d1d" />
+    </linearGradient>
+  </defs>
+
+  <!-- GRUPO PRINCIPAL CON FILTRO -->
+  <g filter="url(#firme3dDropShadow)">
+    
+    <!-- 1. HEXÁGONO EXTERIOR (BISEL 3D) -->
+    <!-- Coordenadas calculadas de hexágono vertical redondeado -->
+    <path d="M 400 35 
+             L 665 185 
+             A 22 22 0 0 1 676 204
+             L 676 505 
+             A 22 22 0 0 1 665 524
+             L 400 675 
+             A 20 20 0 0 1 380 675
+             L 115 524 
+             A 22 22 0 0 1 104 505
+             L 104 204 
+             A 22 22 0 0 1 115 185
+             L 380 35
+             A 20 20 0 0 1 400 35 Z" 
+          fill="url(#firmeOuterBevel)" 
+          stroke="#55050d" 
+          stroke-width="5" />
+
+    <!-- 2. BORDE INTERIOR BRILLANTE (EFECTO 3D EMBOSSED) -->
+    <path d="M 395 50 
+             L 650 195 
+             A 18 18 0 0 1 659 210
+             L 659 498 
+             A 18 18 0 0 1 650 514
+             L 395 658 
+             A 16 16 0 0 1 385 658
+             L 130 514 
+             A 18 18 0 0 1 121 498
+             L 121 210 
+             A 18 18 0 0 1 130 195
+             L 385 50
+             A 16 16 0 0 1 395 50 Z" 
+          fill="none" 
+          stroke="#ff6b7a" 
+          stroke-width="3.5" 
+          stroke-opacity="0.65" />
+
+    <!-- 3. CARA INTERIOR DEL HEXÁGONO -->
+    <path d="M 390 60 
+             L 640 202 
+             L 640 492 
+             L 390 644 
+             L 140 492 
+             L 140 202 Z" 
+          fill="url(#firmeHexBg)" />
+
+    <!-- 4. BRILLO SUPERIOR REFLECTIVO -->
+    <path d="M 390 60 
+             L 640 202 
+             L 640 330 
+             C 530 260, 270 290, 140 420 
+             L 140 202 Z" 
+          fill="url(#firmeTopSheen)" />
+
+    <!-- 5. SILUETA ESCULTÓRICA 3D DEL CORCEL BLANCO (STALLION) -->
+    <!-- Sombra proyectada del caballo en el fondo rojo -->
+    <g transform="translate(10, 15)" opacity="0.35">
+      <path d="M 430,135 
+               C 455,140 480,148 505,170 
+               C 525,188 535,210 520,230 
+               C 555,215 585,230 600,265 
+               C 575,270 545,268 530,285 
+               C 505,310 475,340 470,380 
+               C 475,410 520,445 540,490 
+               C 555,525 595,570 580,600 
+               L 540,605 
+               C 515,580 495,540 480,500 
+               C 450,540 440,580 425,610 
+               L 390,610 
+               C 400,560 415,510 395,470 
+               C 365,495 330,515 285,550 
+               C 270,565 240,605 230,605 
+               L 205,600 
+               C 220,560 250,515 270,470 
+               C 240,450 200,430 170,435 
+               C 150,420 140,390 160,360 
+               C 195,355 240,365 285,380 
+               C 300,340 330,300 370,260 
+               C 340,245 300,240 270,260 
+               C 285,230 330,210 370,200 
+               C 390,175 410,150 430,135 Z" 
+            fill="#260105" />
+    </g>
+
+    <!-- CUERPO PRINCIPAL DEL CABALLO (BLANCO ESCULPIDO CON BRILLO Y RELIEVE) -->
+    <!-- Cola flotante y dinámica -->
+    <path d="M 270,350 
+             C 230,345 180,360 145,395 
+             C 130,412 140,435 160,432 
+             C 190,425 220,405 250,400 
+             C 210,420 175,450 170,480 
+             C 190,482 220,455 245,438 
+             C 220,465 200,505 210,530 
+             C 225,525 250,485 275,450 
+             C 270,410 270,380 270,350 Z" 
+          fill="url(#horseBodyGrad)" 
+          stroke="#94a3b8" 
+          stroke-width="1.5" />
+
+    <!-- Cuartos traseros y pata trasera izquierda -->
+    <path d="M 285,340 
+             C 330,320 375,325 390,360 
+             C 410,410 380,470 345,510 
+             C 320,538 285,575 275,608 
+             L 245,608 
+             C 255,565 295,520 315,475 
+             C 335,430 330,390 300,375 
+             C 285,368 275,355 285,340 Z" 
+          fill="url(#horseBodyGrad)" 
+          stroke="#cbd5e1" 
+          stroke-width="1.5" />
+
+    <!-- Casco trasero izquierdo -->
+    <polygon points="245,600 275,600 270,618 240,618" fill="#e2e8f0" stroke="#64748b" stroke-width="1.5" />
+
+    <!-- Pata trasera derecha (en movimiento) -->
+    <path d="M 360,370 
+             C 395,385 410,420 420,465 
+             C 430,505 410,555 400,605 
+             L 370,605 
+             C 380,560 395,515 385,475 
+             C 375,435 355,405 345,390 Z" 
+          fill="#f1f5f9" 
+          stroke="#cbd5e1" 
+          stroke-width="1.5" />
+    <polygon points="370,598 400,598 395,615 365,615" fill="#e2e8f0" stroke="#64748b" stroke-width="1.5" />
+
+    <!-- Tronco, lomo y costillar musculoso -->
+    <path d="M 330,325 
+             C 380,315 440,315 480,335 
+             C 515,355 525,395 500,435 
+             C 465,475 415,480 365,470 
+             C 330,445 315,380 330,325 Z" 
+          fill="url(#horseBodyGrad)" 
+          stroke="#e2e8f0" 
+          stroke-width="1.5" />
+
+    <!-- Pata delantera izquierda (extendida hacia adelante y abajo) -->
+    <path d="M 480,420 
+             C 505,455 520,500 540,545 
+             C 555,578 575,605 565,622 
+             L 535,625 
+             C 530,595 515,565 500,530 
+             C 480,485 465,455 455,430 Z" 
+          fill="url(#horseBodyGrad)" 
+          stroke="#cbd5e1" 
+          stroke-width="1.5" />
+    <polygon points="535,615 565,612 560,630 530,632" fill="#e2e8f0" stroke="#64748b" stroke-width="1.5" />
+
+    <!-- Pata delantera derecha (alzada con energía hacia el frente, rodilla doblada) -->
+    <path d="M 495,385 
+             C 525,405 560,420 600,430 
+             C 630,438 642,460 625,480 
+             C 605,498 580,515 570,545 
+             L 545,535 
+             C 555,505 580,480 595,465 
+             C 575,455 540,440 515,415 
+             C 490,400 480,390 495,385 Z" 
+          fill="url(#horseBodyGrad)" 
+          stroke="#cbd5e1" 
+          stroke-width="1.5" />
+    <polygon points="570,538 545,528 540,546 565,556" fill="#e2e8f0" stroke="#64748b" stroke-width="1.5" />
+
+    <!-- Pecho imponente y cuello arqueado -->
+    <path d="M 465,340 
+             C 490,320 515,280 520,240 
+             C 525,200 500,165 470,140 
+             C 490,135 520,150 535,175 
+             C 555,205 565,245 550,290 
+             C 540,335 515,380 475,410 
+             Z" 
+          fill="url(#horseBodyGrad)" 
+          stroke="#cbd5e1" 
+          stroke-width="1.5" />
+
+    <!-- Cabeza majestuosa del corcel blanco -->
+    <path d="M 470,140 
+             C 495,130 510,135 525,150 
+             C 545,170 575,195 615,225 
+             C 625,232 628,245 618,252 
+             C 595,265 565,265 540,250 
+             C 520,280 485,290 460,285 
+             C 485,255 490,225 480,195 
+             C 475,175 465,155 470,140 Z" 
+          fill="url(#horseBodyGrad)" 
+          stroke="#94a3b8" 
+          stroke-width="1.5" />
+
+    <!-- Oído y detalles faciales -->
+    <path d="M 520,135 L 535,165 L 515,160 Z" fill="#ffffff" stroke="#94a3b8" stroke-width="1.5" />
+    <ellipse cx="565" cy="205" rx="5.5" ry="3.5" fill="#1e293b" />
+    <path d="M 605,242 C 600,245 595,246 590,245" stroke="#64748b" stroke-width="2" fill="none" stroke-linecap="round" />
+
+    <!-- Crin ondeante y briosa hacia atrás (Flowing Mane) -->
+    <path d="M 515,160 
+             C 485,155 450,175 435,200 
+             C 460,195 480,185 500,185 
+             C 455,195 425,225 410,255 
+             C 435,248 460,238 480,235 
+             C 440,250 405,280 390,320 
+             C 415,310 440,295 465,290 
+             C 430,310 410,340 400,375 
+             C 420,360 450,340 480,335 
+             C 500,310 515,260 520,210 Z" 
+          fill="#ffffff" 
+          stroke="#cbd5e1" 
+          stroke-width="1.5" />
+
+    <!-- Resaltes brillantes 3D en músculos y lomo -->
+    <path d="M 450,345 C 475,340 495,355 500,375" stroke="#ffffff" stroke-width="3" fill="none" stroke-linecap="round" opacity="0.9" />
+    <path d="M 340,335 C 365,330 385,335 400,345" stroke="#ffffff" stroke-width="2.5" fill="none" stroke-linecap="round" opacity="0.8" />
+    <path d="M 505,185 C 520,205 530,235 525,265" stroke="#ffffff" stroke-width="3" fill="none" stroke-linecap="round" opacity="0.9" />
+  </g>
+
+  <!-- 6. TEXTO 3D 'FIRMES' BAJO EL ESCUDO -->
+  <g filter="url(#firmeTextShadow)">
+    
+    <!-- Sombra profunda inferior de las letras -->
+    <text x="400" y="788" 
+          text-anchor="middle" 
+          font-family="'Impact', 'Arial Black', 'Montserrat', sans-serif" 
+          font-weight="900" 
+          font-size="118" 
+          letter-spacing="12" 
+          fill="#3b0207">
+      FIRMES
+    </text>
+    
+    <!-- Capa de extrusión 3D (Rojo Vino Profundo) -->
+    <text x="400" y="784" 
+          text-anchor="middle" 
+          font-family="'Impact', 'Arial Black', 'Montserrat', sans-serif" 
+          font-weight="900" 
+          font-size="118" 
+          letter-spacing="12" 
+          fill="#5e050d">
+      FIRMES
+    </text>
+    <text x="400" y="780" 
+          text-anchor="middle" 
+          font-family="'Impact', 'Arial Black', 'Montserrat', sans-serif" 
+          font-weight="900" 
+          font-size="118" 
+          letter-spacing="12" 
+          fill="#7d0914">
+      FIRMES
+    </text>
+    <text x="400" y="776" 
+          text-anchor="middle" 
+          font-family="'Impact', 'Arial Black', 'Montserrat', sans-serif" 
+          font-weight="900" 
+          font-size="118" 
+          letter-spacing="12" 
+          fill="#9b111c">
+      FIRMES
+    </text>
+
+    <!-- Bisel de contorno exterior brillante -->
+    <text x="400" y="772" 
+          text-anchor="middle" 
+          font-family="'Impact', 'Arial Black', 'Montserrat', sans-serif" 
+          font-weight="900" 
+          font-size="118" 
+          letter-spacing="12" 
+          fill="none" 
+          stroke="#ff4d5e" 
+          stroke-width="5" 
+          stroke-linejoin="round">
+      FIRMES
+    </text>
+
+    <!-- Cara frontal con degradado rojo rubí / carmesí -->
+    <text x="400" y="772" 
+          text-anchor="middle" 
+          font-family="'Impact', 'Arial Black', 'Montserrat', sans-serif" 
+          font-weight="900" 
+          font-size="118" 
+          letter-spacing="12" 
+          fill="url(#textGradTop)">
+      FIRMES
+    </text>
+
+    <!-- Resalte de brillo superior en las letras -->
+    <text x="400" y="768" 
+          text-anchor="middle" 
+          font-family="'Impact', 'Arial Black', 'Montserrat', sans-serif" 
+          font-weight="900" 
+          font-size="118" 
+          letter-spacing="12" 
+          fill="none" 
+          stroke="#ffffff" 
+          stroke-width="1.8" 
+          stroke-opacity="0.45">
+      FIRMES
+    </text>
+  </g>
+</svg>

@@ -60,10 +60,25 @@ export function formatDateTime(dateTimeString: string | undefined | null): strin
 }
 
 /**
- * Exportar arreglo de objetos a CSV
+ * Exportar arreglo de objetos a CSV (soporta ambos órdenes de argumentos)
  */
-export function exportToCSV(filename: string, rows: Record<string, any>[]) {
+export function exportToCSV(param1: string | Record<string, any>[], param2: string | Record<string, any>[]) {
+  let filename: string;
+  let rows: Record<string, any>[];
+
+  if (typeof param1 === 'string') {
+    filename = param1;
+    rows = param2 as Record<string, any>[];
+  } else {
+    rows = param1 as Record<string, any>[];
+    filename = typeof param2 === 'string' ? param2 : 'exportacion_proyectos';
+  }
+
   if (!rows || !rows.length) return;
+  if (filename.endsWith('.csv')) {
+    filename = filename.slice(0, -4);
+  }
+
   const separator = ',';
   const keys = Object.keys(rows[0]);
   

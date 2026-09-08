@@ -1,99 +1,91 @@
 import React, { useState } from 'react';
 import { useApp } from '../context/AppContext';
 import { 
+  ShieldCheck, 
   Lock, 
   User as UserIcon, 
-  KeyRound, 
-  Eye, 
-  EyeOff, 
-  ShieldCheck, 
   AlertCircle, 
-  CheckCircle2,
-  ArrowRight
+  CheckCircle2, 
+  KeyRound,
+  Layers,
+  Building2,
+  FolderLock
 } from 'lucide-react';
 import { OJLogo } from './OJLogo';
 
 export const LoginView: React.FC = () => {
-  const { login, setActiveTab } = useApp();
-  
+  const { login, customLogoConfig } = useApp();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const [showPassword, setShowPassword] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
-  const [successMsg, setSuccessMsg] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [successMsg, setSuccessMsg] = useState('');
 
   const handleFormSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setErrorMsg('');
     setSuccessMsg('');
 
-    if (!username.trim()) {
-      setErrorMsg('Por favor ingrese su usuario institucional.');
-      return;
-    }
-    if (!password.trim()) {
-      setErrorMsg('Por favor ingrese su contraseña de acceso.');
+    if (!username.trim() || !password.trim()) {
+      setErrorMsg('Por favor ingrese su usuario y contraseña institucional.');
       return;
     }
 
     setIsLoading(true);
-    // Simula verificación y autenticación de credenciales seguras
+
     setTimeout(() => {
-      const result = login(username.trim(), password);
-      setIsLoading(false);
-      if (result.success) {
-        setSuccessMsg(`Credenciales verificadas exitosamente. Ingresando al panel principal...`);
-        setActiveTab('dashboard');
+      const ok = login(username.trim(), password.trim());
+      if (!ok) {
+        setErrorMsg('Credenciales inválidas. Verifique su usuario y contraseña.');
+        setIsLoading(false);
       } else {
-        setErrorMsg(result.message);
+        setSuccessMsg('Autenticación exitosa. Cargando entorno de control de proyectos...');
       }
     }, 600);
   };
 
   return (
-    <div className="min-h-screen w-full flex flex-col justify-between bg-[#0a1533] text-slate-100 font-sans relative overflow-x-hidden selection:bg-[#1c39bb] selection:text-white">
+    <div className="min-h-screen w-full flex flex-col justify-between bg-[#120305] text-slate-100 font-sans relative overflow-x-hidden selection:bg-red-700 selection:text-white">
       
-      {/* Fondo con Textura Institucional Sutil */}
+      {/* Fondo con Textura Sutil en tonos Carmesí */}
       <div 
-        className="absolute inset-0 opacity-20 pointer-events-none"
+        className="absolute inset-0 opacity-25 pointer-events-none"
         style={{
-          backgroundImage: `radial-gradient(#4682b4 0.85px, transparent 0.85px), radial-gradient(#1c39bb 0.85px, #070e24 0.85px)`,
+          backgroundImage: `radial-gradient(#8B0000 0.85px, transparent 0.85px), radial-gradient(#4a070e 0.85px, #120305 0.85px)`,
           backgroundSize: '32px 32px',
           backgroundPosition: '0 0, 16px 16px'
         }}
       />
 
-      {/* Barra Superior Decorativa de la República de Guatemala */}
-      <div className="h-1.5 w-full bg-gradient-to-r from-[#1c39bb] via-[#4682b4] to-[#1c39bb]" />
+      {/* Barra Superior Decorativa en Tonos Rojo Rubí y Oro */}
+      <div className="h-1.5 w-full bg-gradient-to-r from-[#4a070e] via-red-600 to-[#4a070e]" />
 
       {/* Contenedor Principal Centrado */}
       <div className="flex-1 flex items-center justify-center p-4 sm:p-6 z-10 my-4 sm:my-8">
-        <div className="w-full max-w-lg bg-[#0d1d45]/95 backdrop-blur-md rounded-2xl border border-[#4682b4]/40 shadow-2xl overflow-hidden">
+        <div className="w-full max-w-lg bg-[#1f0509]/95 backdrop-blur-md rounded-2xl border border-red-800/40 shadow-2xl overflow-hidden">
           
-          {/* Encabezado con Logotipo Grande Arriba de ORGANISMO JUDICIAL */}
-          <div className="p-6 sm:p-8 text-center border-b border-[#1c39bb]/40 bg-gradient-to-b from-[#0e214f] to-[#0a1738]">
+          {/* Encabezado con Logotipo Oficial FIRME */}
+          <div className="p-6 sm:p-8 text-center border-b border-red-900/50 bg-gradient-to-b from-[#2a070d] to-[#1a0407]">
             
-            {/* Logo en Área Grande Arriba de ORGANISMO JUDICIAL */}
             <div className="w-full flex justify-center mb-3">
               <OJLogo size="xl" layout="stacked" variant="full" lightMode={false} />
             </div>
 
-            <div className="mt-4 pt-3 border-t border-[#1c39bb]/40 flex items-center justify-center gap-2 text-[#93c5fd] text-xs font-semibold uppercase tracking-wider">
-              <ShieldCheck className="w-4 h-4 text-[#4682b4]" />
-              <span>Sistema de Control de Adquisiciones (GIT)</span>
+            <div className="mt-4 pt-3 border-t border-red-900/40 flex items-center justify-center gap-2 text-red-300 text-xs font-semibold uppercase tracking-wider">
+              <ShieldCheck className="w-4 h-4 text-red-400" />
+              <span>{customLogoConfig?.subtitle || 'Sistema de Control de Proyectos'}</span>
             </div>
-            <p className="text-[11px] text-slate-300 mt-1">
-              Registro, Monitoreo y Fiscalización de Formularios F56-e y Eventos NOG
+            <p className="text-[11px] text-red-200/80 mt-1">
+              Fiscalización y Trazabilidad en los 14 Ministerios de Gobierno de Guatemala
             </p>
           </div>
 
           {/* Formulario de Inicio de Sesión */}
-          <div className="p-6 sm:p-8 bg-[#0b183c]">
+          <div className="p-6 sm:p-8 bg-[#180407]">
             
             {/* Alertas */}
             {errorMsg && (
-              <div className="mb-4 p-3 rounded-xl bg-red-950/60 border border-red-500/50 text-red-200 text-xs flex items-start gap-2.5 animate-in fade-in">
+              <div className="mb-4 p-3 rounded-xl bg-red-950/80 border border-red-500/50 text-red-200 text-xs flex items-start gap-2.5 animate-in fade-in">
                 <AlertCircle className="w-4 h-4 text-red-400 flex-shrink-0 mt-0.5" />
                 <div>
                   <span className="font-bold block">Error de Verificación:</span>
@@ -103,7 +95,7 @@ export const LoginView: React.FC = () => {
             )}
 
             {successMsg && (
-              <div className="mb-4 p-3 rounded-xl bg-emerald-950/60 border border-emerald-500/50 text-emerald-200 text-xs flex items-center gap-2.5 animate-in fade-in">
+              <div className="mb-4 p-3 rounded-xl bg-emerald-950/80 border border-emerald-500/50 text-emerald-200 text-xs flex items-center gap-2.5 animate-in fade-in">
                 <CheckCircle2 className="w-4 h-4 text-emerald-400 flex-shrink-0" />
                 <span className="font-medium">{successMsg}</span>
               </div>
@@ -113,11 +105,11 @@ export const LoginView: React.FC = () => {
               
               {/* Campo Usuario */}
               <div>
-                <label className="block text-xs font-bold uppercase tracking-wider text-slate-200 mb-1.5">
+                <label className="block text-xs font-bold uppercase tracking-wider text-red-200 mb-1.5">
                   Usuario Institucional
                 </label>
                 <div className="relative">
-                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
+                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-red-400">
                     <UserIcon className="w-4 h-4" />
                   </div>
                   <input
@@ -126,75 +118,61 @@ export const LoginView: React.FC = () => {
                     onChange={(e) => setUsername(e.target.value)}
                     placeholder="Ingrese su usuario"
                     disabled={isLoading}
-                    className="w-full pl-9 pr-4 py-2.5 bg-[#060f26]/80 border border-[#4682b4]/40 rounded-xl text-white text-xs placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-[#4682b4] focus:border-transparent transition-all"
+                    className="w-full pl-9 pr-4 py-2.5 bg-[#0e0204]/90 border border-red-800/40 rounded-xl text-white text-xs placeholder:text-red-300/40 focus:outline-none focus:ring-2 focus:ring-red-600 focus:border-transparent transition-all"
                   />
                 </div>
               </div>
 
               {/* Campo Contraseña */}
               <div>
-                <div className="flex items-center justify-between mb-1.5">
-                  <label className="block text-xs font-bold uppercase tracking-wider text-slate-200">
-                    Contraseña de Acceso
-                  </label>
-                  <span className="text-[10px] text-slate-400">
-                    Sensible a mayúsculas
-                  </span>
-                </div>
+                <label className="block text-xs font-bold uppercase tracking-wider text-red-200 mb-1.5">
+                  Contraseña de Seguridad
+                </label>
                 <div className="relative">
-                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
-                    <KeyRound className="w-4 h-4" />
+                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-red-400">
+                    <Lock className="w-4 h-4" />
                   </div>
                   <input
-                    type={showPassword ? 'text' : 'password'}
+                    type="password"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
-                    placeholder="••••••••"
+                    placeholder="••••••••••••"
                     disabled={isLoading}
-                    className="w-full pl-9 pr-10 py-2.5 bg-[#060f26]/80 border border-[#4682b4]/40 rounded-xl text-white text-xs placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-[#4682b4] focus:border-transparent transition-all"
+                    className="w-full pl-9 pr-4 py-2.5 bg-[#0e0204]/90 border border-red-800/40 rounded-xl text-white text-xs placeholder:text-red-300/40 focus:outline-none focus:ring-2 focus:ring-red-600 focus:border-transparent transition-all"
                   />
-                  <button
-                    type="button"
-                    onClick={() => setShowPassword(!showPassword)}
-                    tabIndex={-1}
-                    className="absolute inset-y-0 right-0 pr-3 flex items-center text-slate-400 hover:text-slate-200"
-                  >
-                    {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
-                  </button>
                 </div>
               </div>
 
-              {/* Botón de Autenticación */}
+              {/* Botón de Envío */}
               <button
                 type="submit"
                 disabled={isLoading}
-                className="w-full py-3 px-4 rounded-xl bg-white hover:bg-slate-100 text-black font-bold text-xs uppercase tracking-wider shadow-lg border border-slate-300 flex items-center justify-center gap-2 transition-all active:scale-[0.99] cursor-pointer disabled:opacity-50"
+                className="w-full mt-2 py-3 px-4 bg-gradient-to-r from-red-700 via-rose-700 to-red-800 hover:from-red-600 hover:via-rose-600 hover:to-red-700 text-white font-bold text-xs rounded-xl shadow-lg transition-all transform active:scale-98 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 cursor-pointer border border-red-500/30"
               >
                 {isLoading ? (
                   <>
-                    <div className="w-4 h-4 border-2 border-slate-800 border-t-transparent rounded-full animate-spin" />
-                    <span>Verificando Credenciales...</span>
+                    <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                    <span>Autenticando credenciales...</span>
                   </>
                 ) : (
                   <>
-                    <Lock className="w-4 h-4 text-black" />
-                    <span>Autenticar e Ingresar al Sistema</span>
-                    <ArrowRight className="w-4 h-4 text-black" />
+                    <KeyRound className="w-4 h-4" />
+                    <span>Iniciar Sesión en el Sistema</span>
                   </>
                 )}
               </button>
             </form>
 
             {/* Aviso Institucional de Seguridad y Privacidad */}
-            <div className="mt-6 pt-5 border-t border-[#1c39bb]/30">
-              <div className="flex items-start gap-3 p-3.5 rounded-xl bg-[#071129]/80 border border-[#4682b4]/30 text-slate-300">
-                <ShieldCheck className="w-5 h-5 text-[#4682b4] flex-shrink-0 mt-0.5" />
+            <div className="mt-6 pt-5 border-t border-red-900/40">
+              <div className="flex items-start gap-3 p-3.5 rounded-xl bg-[#0e0204]/80 border border-red-900/30 text-slate-300">
+                <ShieldCheck className="w-5 h-5 text-red-500 flex-shrink-0 mt-0.5" />
                 <div className="space-y-1 leading-relaxed text-left">
                   <p className="font-bold text-xs text-white">
-                    Acceso Oficial Restringido y Protegido
+                    Acceso Oficial Restringido y Auditado
                   </p>
-                  <p className="text-[11px] text-slate-300">
-                    El ingreso a esta plataforma está estrictamente reservado para personal autorizado del Organismo Judicial. Toda sesión y transacción es fiscalizada y registrada en la bitácora de auditoría interna de la GIT.
+                  <p className="text-[11px] text-red-100/70">
+                    Plataforma interinstitucional para el control, supervisión física y seguimiento documental en Google Drive de obras y proyectos ministeriales.
                   </p>
                 </div>
               </div>
@@ -203,11 +181,11 @@ export const LoginView: React.FC = () => {
           </div>
 
           {/* Pie del Panel de Login */}
-          <div className="px-6 py-3 bg-[#060e24] border-t border-[#1c39bb]/40 flex items-center justify-between text-[10px] text-slate-400 font-mono">
-            <span>TERMINAL: GIT-SEC-01</span>
+          <div className="px-6 py-3 bg-[#0c0103] border-t border-red-950 flex items-center justify-between text-[10px] text-red-300/70 font-mono">
+            <span>PLATAFORMA: FIRME-SEC-01</span>
             <span className="flex items-center gap-1.5">
               <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-              SISTEMA OPERATIVO SEGURO
+              CONECTADO A FIRESTORE CLOUD
             </span>
           </div>
 
@@ -215,15 +193,16 @@ export const LoginView: React.FC = () => {
       </div>
 
       {/* Pie de Página Institucional */}
-      <footer className="p-4 text-center text-xs text-slate-500 border-t border-slate-900 bg-slate-950/80 z-10">
-        <p className="font-semibold text-slate-400">
-          Organismo Judicial de Guatemala • Gerencia de Informática y Telecomunicaciones
+      <footer className="w-full py-4 text-center text-xs text-red-300/60 z-10 border-t border-red-950 bg-[#0a0102]">
+        <p className="font-medium">
+          Alianzas Estratégicas - FIRME • Sistema de Control de Proyectos
         </p>
-        <p className="text-[11px] text-slate-600 mt-0.5">
-          Palacio de Justicia, Centro Cívico, Ciudad de Guatemala • Todos los derechos reservados © 2026
+        <p className="text-[10px] text-red-400/40 mt-0.5">
+          Ministerios de la República de Guatemala • Control Documental Google Drive
         </p>
       </footer>
-
     </div>
   );
 };
+
+export default LoginView;

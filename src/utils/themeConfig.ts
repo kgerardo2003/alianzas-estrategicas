@@ -29,11 +29,38 @@ export interface ThemeConfig {
 }
 
 export const SYSTEM_THEMES: Record<SystemThemeId, ThemeConfig> = {
+  firme_carmesi: {
+    id: 'firme_carmesi',
+    name: 'Rojo Carmesí & Plata - FIRME',
+    tagline: 'Paleta Oficial Alianzas Estratégicas',
+    description: 'Inspirada en el escudo hexagonal carmesí y el corcel blanco del emblema FIRMES, con acentos en rojo rubí 3D y acabados de plata pulida.',
+    sidebarBg: 'bg-[#180407]',
+    sidebarBorder: 'border-[#4c0b14]',
+    sidebarActive: 'bg-[#8B0000]/30 text-white font-bold border-l-4 border-[#DC2626]',
+    sidebarHover: 'hover:bg-[#2c080e] hover:text-red-100',
+    sidebarIconActive: 'text-[#EF4444]',
+    sidebarBadge: 'bg-[#7A0C16] text-white border border-red-500/30',
+    primaryBtn: 'bg-gradient-to-r from-[#8B0000] via-[#A81324] to-[#700813] hover:from-[#A81324] hover:to-[#8B0000] text-white border border-red-500/50 shadow-md font-bold cursor-pointer transition-all active:scale-[0.99]',
+    secondaryBtn: 'bg-white hover:bg-red-50 text-slate-900 border border-slate-300 shadow-xs font-semibold cursor-pointer transition-all active:scale-[0.99]',
+    accentText: 'text-[#991B1B]',
+    accentBorder: 'border-[#DC2626]',
+    focusRing: 'focus:ring-[#DC2626]',
+    dotColor: 'bg-[#DC2626]',
+    logoBadgeBg: 'bg-[#8B0000]',
+    logoBadgeText: 'text-white',
+    appBackground: 'bg-[#F8F9FA]',
+    preview: {
+      sidebar: '#180407',
+      accent: '#DC2626',
+      surface: '#F8F9FA',
+      header: '#8B0000'
+    }
+  },
   azul_persia_acero: {
     id: 'azul_persia_acero',
     name: 'Azul Persia & Azul Acero',
-    tagline: 'Paleta Oficial Institucional GIT',
-    description: 'Armonía corporativa de Azul Persia (#1C39BB) y Azul Acero (#4682B4) con contraste óptimo y balance institucional.',
+    tagline: 'Paleta Institucional',
+    description: 'Armonía corporativa de Azul Persia (#1C39BB) y Azul Acero (#4682B4) con contraste óptimo.',
     sidebarBg: 'bg-[#0D1F4D]',
     sidebarBorder: 'border-[#1C39BB]/40',
     sidebarActive: 'bg-[#4682B4]/25 text-[#93C5FD] font-bold border-l-4 border-[#4682B4]',
@@ -59,8 +86,8 @@ export const SYSTEM_THEMES: Record<SystemThemeId, ThemeConfig> = {
   slate_ambar: {
     id: 'slate_ambar',
     name: 'Profesional Pizarra & Ámbar',
-    tagline: 'Tema Oficial Predeterminado',
-    description: 'Diseño sobrio de alto contraste con laterales en gris pizarra profundo y botones de acción en ámbar dorado institucional.',
+    tagline: 'Tema Pizarra Alternativo',
+    description: 'Diseño sobrio de alto contraste con laterales en gris pizarra profundo y botones de acción en ámbar.',
     sidebarBg: 'bg-slate-900',
     sidebarBorder: 'border-slate-800',
     sidebarActive: 'bg-amber-600/20 text-amber-400 font-bold',
@@ -84,9 +111,9 @@ export const SYSTEM_THEMES: Record<SystemThemeId, ThemeConfig> = {
   },
   azul_judicial: {
     id: 'azul_judicial',
-    name: 'Azul Judicial Soberano',
-    tagline: 'Corte Suprema y Tribunales',
-    description: 'Paleta solemne inspirada en el Azul Marino Institucional del Organismo Judicial y detalles en oro republicano.',
+    name: 'Azul Soberano',
+    tagline: 'Paleta Azul Marino Profundo',
+    description: 'Paleta solemne inspirada en el Azul Marino Profundo y detalles dorados.',
     sidebarBg: 'bg-[#07243e]',
     sidebarBorder: 'border-[#0a3254]',
     sidebarActive: 'bg-amber-400/20 text-amber-300 font-bold border-l-2 border-amber-400',
@@ -111,8 +138,8 @@ export const SYSTEM_THEMES: Record<SystemThemeId, ThemeConfig> = {
   grafito_esmeralda: {
     id: 'grafito_esmeralda',
     name: 'Grafito & Esmeralda Jade',
-    tagline: 'Modernidad Tecnológica GIT',
-    description: 'Estilo contemporáneo con base grafito neutro y acentos en verde jade / esmeralda que evocan precisión e innovación.',
+    tagline: 'Modernidad Tecnológica',
+    description: 'Estilo contemporáneo con base grafito neutro y acentos en verde jade / esmeralda.',
     sidebarBg: 'bg-zinc-900',
     sidebarBorder: 'border-zinc-800',
     sidebarActive: 'bg-emerald-500/20 text-emerald-400 font-bold',

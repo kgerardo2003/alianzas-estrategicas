@@ -19,13 +19,18 @@ import {
   Square,
   MinusSquare,
   ShieldAlert,
-  X
+  X,
+  Building2,
+  Folder,
+  ExternalLink,
+  HardDrive
 } from 'lucide-react';
 import { PurchaseRecord } from '../types';
 import { formatQuetzales, formatDate, exportToCSV, getModalidadCompraByMonto } from '../utils/formatters';
 import { ExportPdfModal } from './ExportPdfModal';
 import { generatePurchasesPDF } from '../utils/pdfExport';
 import { downloadDocumentFile } from '../utils/documentUtils';
+import { MINISTERIOS_GUATEMALA, getMinisterioBySiglas } from '../data/ministeriosData';
 
 const STATUS_BADGE_CLASSES: Record<string, string> = {
   'Adjudicación': 'bg-blue-100 text-blue-700',
@@ -56,6 +61,7 @@ export const PurchasesView: React.FC = () => {
   const [filterEstatus, setFilterEstatus] = useState('todos');
   const [filterGIT, setFilterGIT] = useState('todos');
   const [filterCategory, setFilterCategory] = useState('todos');
+  const [filterMinisterio, setFilterMinisterio] = useState('todos');
   const [sortBy, setSortBy] = useState<'fecha' | 'monto' | 'nog'>('fecha');
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('desc');
   const [itemToDelete, setItemToDelete] = useState<PurchaseRecord | null>(null);
@@ -123,6 +129,11 @@ export const PurchasesView: React.FC = () => {
         if (filterEstatus !== 'todos' && p.estatusEvento !== filterEstatus) return false;
         if (filterGIT !== 'todos' && p.evaluadoGIT !== filterGIT) return false;
         if (filterCategory !== 'todos' && p.categoriaTecnologica !== filterCategory) return false;
+        if (filterMinisterio !== 'todos') {
+          const matchSiglas = (p.siglasMinisterio || '').toUpperCase() === filterMinisterio.toUpperCase();
+          const matchNombre = (p.ministerio || '').toLowerCase().includes(filterMinisterio.toLowerCase());
+          if (!matchSiglas && !matchNombre) return false;
+        }
         return true;
       })
       .sort((a, b) => {
@@ -136,7 +147,7 @@ export const PurchasesView: React.FC = () => {
         }
         return sortOrder === 'asc' ? comparison : -comparison;
       });
-  }, [purchases, searchTerm, filterEstatus, filterGIT, filterCategory, sortBy, sortOrder]);
+  }, [purchases, searchTerm, filterEstatus, filterGIT, filterCategory, filterMinisterio, sortBy, sortOrder]);
 
   const totalFilteredMonto = useMemo(() => {
     return filteredPurchases.reduce((acc, p) => acc + (p.monto || 0), 0);
@@ -471,7 +482,7 @@ export const PurchasesView: React.FC = () => {
         <div className="grid grid-cols-1 md:grid-cols-12 gap-3">
           
           {/* Input de Búsqueda */}
-          <div className="md:col-span-6 relative">
+          <div className="md:col-span-4 relative">
             <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
               <Search className="w-4 h-4" />
             </div>
@@ -480,18 +491,35 @@ export const PurchasesView: React.FC = () => {
               type="text"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              placeholder="Buscar por NOG (8 dígitos), F56-e, F56, descripción..."
-              className="w-full pl-9 pr-4 py-2 text-xs border border-slate-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-amber-500 font-medium"
+              placeholder="Buscar por proyecto, código, NOG, F56-e..."
+              className="w-full pl-9 pr-4 py-2 text-xs border border-slate-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-red-600 font-medium"
             />
           </div>
 
+          {/* Filtro Ministerio de Gobierno */}
+          <div className="md:col-span-4">
+            <select
+              id="filter-select-ministerio"
+              value={filterMinisterio}
+              onChange={(e) => setFilterMinisterio(e.target.value)}
+              className="w-full p-2 text-xs border border-red-200 rounded-lg bg-red-50/50 focus:outline-none focus:ring-1 focus:ring-red-600 font-bold text-red-950"
+            >
+              <option value="todos">🏛️ Todos los Ministerios (14)</option>
+              {MINISTERIOS_GUATEMALA.map(min => (
+                <option key={min.id} value={min.siglas}>
+                  {min.siglas} — {min.nombre}
+                </option>
+              ))}
+            </select>
+          </div>
+
           {/* Filtro Estatus */}
-          <div className="md:col-span-3">
+          <div className="md:col-span-2">
             <select
               id="filter-select-estatus"
               value={filterEstatus}
               onChange={(e) => setFilterEstatus(e.target.value)}
-              className="w-full p-2 text-xs border border-slate-300 rounded-lg bg-white focus:outline-none focus:ring-1 focus:ring-amber-500 font-medium text-slate-700"
+              className="w-full p-2 text-xs border border-slate-300 rounded-lg bg-white focus:outline-none focus:ring-1 focus:ring-red-600 font-medium text-slate-700"
             >
               <option value="todos">Todos los Estatus</option>
               {statusOptions.map((st) => (
@@ -501,14 +529,14 @@ export const PurchasesView: React.FC = () => {
           </div>
 
           {/* Filtro GIT */}
-          <div className="md:col-span-3">
+          <div className="md:col-span-2">
             <select
               id="filter-select-git"
               value={filterGIT}
               onChange={(e) => setFilterGIT(e.target.value)}
-              className="w-full p-2 text-xs border border-slate-300 rounded-lg bg-white focus:outline-none focus:ring-1 focus:ring-amber-500 font-medium text-slate-700"
+              className="w-full p-2 text-xs border border-slate-300 rounded-lg bg-white focus:outline-none focus:ring-1 focus:ring-red-600 font-medium text-slate-700"
             >
-              <option value="todos">Evaluado GIT: Todos</option>
+              <option value="todos">Dictamen Técnico: Todos</option>
               <option value="Sí">Evaluado: Sí</option>
               <option value="No">Evaluado: No</option>
             </select>
@@ -594,48 +622,38 @@ export const PurchasesView: React.FC = () => {
                     />
                   )}
                 </th>
-                <th className="px-4 py-3">NOG</th>
-                <th className="px-3 py-3">F56-e / F56</th>
-                <th className="px-4 py-3">Descripción</th>
-                <th className="px-3 py-3">Fecha Solicitud</th>
-                <th className="px-3 py-3 text-right">Monto (Q)</th>
-                <th className="px-3 py-3 text-center">Ofertas</th>
-                <th className="px-3 py-3 text-center whitespace-nowrap">Evaluado por el Área Técnica</th>
-                <th className="px-3 py-3 text-center whitespace-nowrap">Estatus del Evento</th>
+                <th className="px-4 py-3">Código / NOG</th>
+                <th className="px-4 py-3">Proyecto & Cartera Ministerial</th>
+                <th className="px-3 py-3">Avance Físico</th>
+                <th className="px-3 py-3 text-right">Presupuesto (Q)</th>
+                <th className="px-3 py-3 text-center">Google Drive</th>
+                <th className="px-3 py-3 text-center whitespace-nowrap">Estatus</th>
                 <th className="px-4 py-3 text-center">Acciones</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-100 text-xs">
               {filteredPurchases.length === 0 ? (
                 <tr>
-                  <td colSpan={10} className="py-12 text-center text-slate-500">
+                  <td colSpan={8} className="py-12 text-center text-slate-500">
                     <div className="max-w-md mx-auto flex flex-col items-center justify-center space-y-3">
-                      <div className="p-3 bg-slate-100 rounded-full text-slate-400">
-                        <FileSpreadsheet className="w-8 h-8 text-slate-500" />
+                      <div className="p-3 bg-red-50 rounded-full text-red-800">
+                        <Building2 className="w-8 h-8" />
                       </div>
                       <div>
-                        <p className="font-bold text-sm text-slate-800">No se encontraron adquisiciones registradas</p>
+                        <p className="font-bold text-sm text-slate-800">No se encontraron proyectos ministeriales</p>
                         <p className="text-xs text-slate-500 mt-1">
-                          Puedes registrar una adquisición individual o realizar una carga masiva desde tu archivo Excel.
+                          Puedes registrar un nuevo proyecto o ajustar tus filtros de búsqueda por ministerio.
                         </p>
                       </div>
                       {canCreate && (
                         <div className="flex items-center gap-2.5 pt-2">
                           <button
                             type="button"
-                            onClick={() => setIsImportModalOpen(true)}
-                            className="px-4 py-2 rounded-xl bg-emerald-700 hover:bg-emerald-800 text-white text-xs font-bold flex items-center gap-1.5 shadow-xs transition-colors cursor-pointer"
-                          >
-                            <FileSpreadsheet className="w-4 h-4 text-emerald-200" />
-                            <span>Importar desde Excel</span>
-                          </button>
-                          <button
-                            type="button"
                             onClick={() => { setPurchaseToEdit(null); setIsPurchaseModalOpen(true); }}
                             className={`px-3.5 py-2 rounded-xl ${themeConfig.primaryBtn} text-xs font-bold flex items-center gap-1.5 shadow-xs transition-colors cursor-pointer`}
                           >
                             <PlusCircle className="w-4 h-4 text-black" />
-                            <span>+ Nueva Adquisición</span>
+                            <span>+ Nuevo Proyecto</span>
                           </button>
                         </div>
                       )}
@@ -646,6 +664,11 @@ export const PurchasesView: React.FC = () => {
                 filteredPurchases.map((p) => {
                   const isSelected = selectedIds.includes(p.id);
                   const badgeClass = STATUS_BADGE_CLASSES[p.estatusEvento] || 'bg-slate-100 text-slate-700';
+                  const minObj = getMinisterioBySiglas(p.siglasMinisterio || '');
+                  const displayMonto = p.presupuestoAsignado || p.monto || 0;
+                  const fisicoVal = p.avanceFisico !== undefined ? p.avanceFisico : 45;
+                  const driveDocsCount = p.documentosDrive?.length || 0;
+
                   return (
                     <tr 
                       key={p.id} 
@@ -660,94 +683,79 @@ export const PurchasesView: React.FC = () => {
                             type="checkbox"
                             checked={isSelected}
                             onChange={() => toggleSelectOne(p.id)}
-                            aria-label={`Seleccionar adquisición NOG ${p.nog}`}
+                            aria-label={`Seleccionar proyecto ${p.codigo || p.nog}`}
                             className="w-4 h-4 rounded text-rose-600 focus:ring-rose-500 border-slate-300 cursor-pointer"
                           />
                         )}
                       </td>
                       
-                      {/* NOG */}
-                      <td className="px-4 py-3 font-mono font-bold text-slate-900 whitespace-nowrap">
-                        {p.nog}
+                      {/* Código y NOG */}
+                      <td className="px-4 py-3 whitespace-nowrap font-mono">
+                        <span className="font-bold text-slate-900 block">{p.codigo || p.f56e || p.nog}</span>
+                        {p.nog && <span className="text-[10px] text-slate-400 block font-normal">NOG: {p.nog}</span>}
                       </td>
 
-                      {/* F56-e y F56 */}
-                      <td className="px-3 py-3 whitespace-nowrap font-mono">
-                        <span className="font-bold text-slate-800 block">{p.f56e}</span>
-                        <span className="text-[10px] text-slate-400 block">{p.f56}</span>
-                        {p.f56Documento && (
-                          <button
-                            type="button"
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              downloadDocumentFile(p.f56Documento!, p);
-                            }}
-                            title={`Descargar Documento F56: ${p.f56Documento.nombre}`}
-                            className="inline-flex items-center gap-1 mt-1 text-[9px] font-sans font-bold text-amber-700 bg-amber-50 hover:bg-amber-100 border border-amber-200 px-1.5 py-0.5 rounded cursor-pointer transition-colors"
-                          >
-                            <Paperclip className="w-2.5 h-2.5 text-amber-600" />
-                            Doc F56
-                          </button>
-                        )}
-                      </td>
-
-                      {/* Descripción */}
-                      <td className="px-4 py-3 max-w-xs">
-                        <p className="font-medium text-slate-800 line-clamp-2" title={p.descripcion}>
-                          {p.descripcion}
+                      {/* Proyecto y Cartera Ministerial */}
+                      <td className="px-4 py-3 max-w-sm">
+                        <p className="font-bold text-slate-900 line-clamp-1" title={p.nombre || p.descripcion}>
+                          {p.nombre || p.descripcion}
                         </p>
-                        {p.areaSolicitante && (
-                          <span className="inline-block mt-1 px-1.5 py-0.5 rounded text-[10px] font-medium bg-amber-50 text-amber-800 border border-amber-200">
-                            {p.areaSolicitante}
+                        <div className="flex items-center gap-1.5 mt-1 flex-wrap">
+                          <span 
+                            className="px-1.5 py-0.5 rounded text-[9px] font-black text-white shadow-2xs"
+                            style={{ backgroundColor: minObj ? minObj.color : '#8B0000' }}
+                          >
+                            {p.siglasMinisterio || 'GOB'}
                           </span>
-                        )}
+                          <span className="text-[11px] text-slate-600 truncate max-w-[240px]">
+                            {p.ministerio || 'Gobierno de Guatemala'}
+                          </span>
+                        </div>
                       </td>
 
-                      {/* Fecha Solicitud */}
-                      <td className="px-3 py-3 text-slate-600 whitespace-nowrap">
-                        {formatDate(p.fechaSolicitud)}
-                      </td>
-
-                      {/* Monto */}
-                      <td className="px-3 py-3 text-right font-bold text-slate-900 whitespace-nowrap">
-                        {formatQuetzales(p.monto)}
-                      </td>
-
-                      {/* Cantidad de Ofertas */}
-                      <td className="px-3 py-3 text-center font-semibold text-slate-700">
-                        {p.cantidadOfertas}
-                      </td>
-
-                      {/* Evaluado por el Área Técnica Correspondiente */}
-                      <td className="px-3 py-3 text-center whitespace-nowrap">
-                        {p.evaluadoGIT === 'Sí' ? (
-                          <div className="inline-flex flex-col items-center">
-                            <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">
-                              <CheckCircle2 className="w-3 h-3 text-emerald-600" />
-                              Evaluado por Área Técnica
-                            </span>
-                            {p.fechaDictamenGIT && (
-                              <span className="text-[9px] text-slate-500 font-mono mt-0.5">
-                                Dictamen: {formatDate(p.fechaDictamenGIT)}
-                              </span>
-                            )}
-                            {p.fechaElaboracionOficioGIT && (
-                              <span className="text-[9px] text-amber-700 font-mono">
-                                Oficio GIT: {formatDate(p.fechaElaboracionOficioGIT)}
-                              </span>
-                            )}
+                      {/* Avance Físico */}
+                      <td className="px-3 py-3 whitespace-nowrap">
+                        <div className="w-24">
+                          <div className="flex justify-between items-center text-[10px] font-bold text-slate-700 mb-1">
+                            <span>{fisicoVal}%</span>
+                            <span className="text-[9px] text-slate-400 font-normal">Meta: 100%</span>
                           </div>
-                        ) : (
-                          <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-medium bg-slate-100 text-slate-500 border border-slate-200">
-                            No evaluado
-                          </span>
-                        )}
+                          <div className="h-1.5 w-full bg-slate-200 rounded-full overflow-hidden">
+                            <div 
+                              className={`h-full rounded-full transition-all duration-300 ${
+                                fisicoVal >= 75 ? 'bg-emerald-600' : fisicoVal >= 40 ? 'bg-blue-600' : 'bg-amber-500'
+                              }`}
+                              style={{ width: `${Math.min(100, Math.max(0, fisicoVal))}%` }}
+                            />
+                          </div>
+                        </div>
                       </td>
 
-                      {/* Estatus del Evento */}
+                      {/* Presupuesto (Q) */}
+                      <td className="px-3 py-3 text-right font-bold text-slate-900 whitespace-nowrap font-mono">
+                        {formatQuetzales(displayMonto)}
+                      </td>
+
+                      {/* Google Drive */}
+                      <td className="px-3 py-3 text-center whitespace-nowrap">
+                        <a
+                          href={p.googleDriveFolderUrl || `https://drive.google.com/drive/folders/alianzas-${p.id}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          onClick={(e) => e.stopPropagation()}
+                          className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-red-50 hover:bg-red-100 text-red-900 border border-red-200 text-[10px] font-bold cursor-pointer transition-colors shadow-2xs"
+                          title="Abrir expediente en Google Drive"
+                        >
+                          <Folder className="w-3 h-3 text-red-700" />
+                          <span>Expediente ({driveDocsCount > 0 ? driveDocsCount : 'Drive'})</span>
+                          <ExternalLink className="w-2.5 h-2.5 text-red-600" />
+                        </a>
+                      </td>
+
+                      {/* Estatus */}
                       <td className="px-3 py-3 text-center whitespace-nowrap">
                         <span className={`px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wide ${badgeClass}`}>
-                          {p.estatusEvento}
+                          {p.estatus || p.estatusEvento}
                         </span>
                       </td>
 
@@ -757,8 +765,8 @@ export const PurchasesView: React.FC = () => {
                           <button
                             type="button"
                             onClick={() => setSelectedPurchase(p)}
-                            className="p-1.5 rounded-md text-slate-600 hover:text-amber-600 hover:bg-slate-100 transition-colors"
-                            title="Ver Ficha Detallada"
+                            className="p-1.5 rounded-md text-slate-600 hover:text-red-700 hover:bg-slate-100 transition-colors"
+                            title="Ver Ficha y Expediente Drive"
                           >
                             <Eye className="w-4 h-4" />
                           </button>
@@ -768,7 +776,7 @@ export const PurchasesView: React.FC = () => {
                               type="button"
                               onClick={() => { setPurchaseToEdit(p); setIsPurchaseModalOpen(true); }}
                               className="p-1.5 rounded-md text-slate-600 hover:text-blue-600 hover:bg-slate-100 transition-colors"
-                              title="Editar"
+                              title="Editar Proyecto"
                             >
                               <Edit className="w-4 h-4" />
                             </button>

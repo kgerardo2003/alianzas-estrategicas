@@ -1,7 +1,6 @@
 {
-  "name": "Sistema de Control de Compras - Gerencia de Informática OJ Guatemala",
-  "description": "Sistema de gestión y control de adquisiciones para la Gerencia de Informática del Organismo Judicial de Guatemala, con dashboard interactivo, catálogos, auditoría y control de usuarios.",
+  "name": "Alianzas Estratégicas - FIRME",
+  "description": "Sistema de Control de Proyectos de los Ministerios de Gobierno de Guatemala, con control de documentos en Google Drive, estadísticas y reportería institucional.",
   "requestFramePermissions": [],
   "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
 }
-

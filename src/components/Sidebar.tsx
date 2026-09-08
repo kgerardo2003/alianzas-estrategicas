@@ -13,7 +13,9 @@ import {
   X,
   Lock,
   RotateCcw,
-  KeyRound
+  KeyRound,
+  Building2,
+  Layers
 } from 'lucide-react';
 import { ActiveTab } from '../types';
 import { OJLogo } from './OJLogo';
@@ -106,7 +108,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ isMobileOpen, onCloseMobile })
               className="w-full flex items-center justify-center gap-2 px-3 py-2.5 rounded-xl bg-white hover:bg-slate-100 text-black border border-slate-300 font-bold text-xs transition-all duration-150 active:scale-[0.98] cursor-pointer shadow-md"
             >
               <PlusCircle className="w-4 h-4 text-black" />
-              <span>+ Nueva Adquisición</span>
+              <span>+ Nuevo Proyecto</span>
             </button>
           ) : (
             <div className="px-3 py-2 rounded-lg bg-white/5 border border-white/10 text-amber-300 text-xs flex items-center gap-2">
@@ -139,7 +141,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ isMobileOpen, onCloseMobile })
             <span>Panel Principal</span>
           </button>
 
-          {/* Compras y Eventos */}
+          {/* Control de Proyectos */}
           <button
             id="nav-tab-compras"
             type="button"
@@ -151,11 +153,31 @@ export const Sidebar: React.FC<SidebarProps> = ({ isMobileOpen, onCloseMobile })
             }`}
           >
             <div className="flex items-center">
-              <ShoppingBag className={`w-4 h-4 mr-3 ${activeTab === 'compras' ? themeConfig.sidebarIconActive : 'text-slate-400'}`} />
-              <span>Compras y Eventos</span>
+              <Layers className={`w-4 h-4 mr-3 ${activeTab === 'compras' ? themeConfig.sidebarIconActive : 'text-slate-400'}`} />
+              <span>Control de Proyectos</span>
             </div>
             <span className={`text-[10px] px-2 py-0.5 rounded-full ${themeConfig.sidebarBadge} font-mono`}>
               {purchases.length}
+            </span>
+          </button>
+
+          {/* Estadísticas por Ministerio */}
+          <button
+            id="nav-tab-estadisticas"
+            type="button"
+            onClick={() => handleNavClick('estadisticas')}
+            className={`w-full flex items-center justify-between px-3.5 py-2 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
+              activeTab === 'estadisticas'
+                ? themeConfig.sidebarActive
+                : `text-slate-300 ${themeConfig.sidebarHover}`
+            }`}
+          >
+            <div className="flex items-center">
+              <Building2 className={`w-4 h-4 mr-3 ${activeTab === 'estadisticas' ? themeConfig.sidebarIconActive : 'text-slate-400'}`} />
+              <span>Estadísticas por Ministerio</span>
+            </div>
+            <span className={`text-[10px] px-1.5 py-0.5 rounded-full ${themeConfig.sidebarBadge} font-bold text-[9px]`}>
+              14
             </span>
           </button>
 
