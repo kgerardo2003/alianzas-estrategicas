@@ -208,7 +208,7 @@ export interface GmailConfig {
   lastTestError?: string;
 }
 
-export type SystemThemeId = 'firme_carmesi' | 'azul_persia_acero' | 'slate_ambar' | 'azul_judicial' | 'grafito_esmeralda';
+export type SystemThemeId = 'firme_carmesi' | 'firme_blanco' | 'azul_persia_acero' | 'slate_ambar' | 'azul_judicial' | 'grafito_esmeralda';
 
 export interface CustomLogoConfig {
   type: 'preset' | 'custom_image';

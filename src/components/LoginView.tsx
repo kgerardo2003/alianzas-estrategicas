@@ -27,7 +27,7 @@ export const LoginView: React.FC = () => {
     setSuccessMsg('');
 
     if (!username.trim() || !password.trim()) {
-      setErrorMsg('Por favor ingrese su usuario y contraseña institucional.');
+      setErrorMsg('Por favor ingrese su usuario y contraseña.');
       return;
     }
 
@@ -106,7 +106,7 @@ export const LoginView: React.FC = () => {
               {/* Campo Usuario */}
               <div>
                 <label className="block text-xs font-bold uppercase tracking-wider text-red-200 mb-1.5">
-                  Usuario Institucional
+                  Usuario
                 </label>
                 <div className="relative">
                   <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-red-400">

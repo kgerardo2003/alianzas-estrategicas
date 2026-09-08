@@ -294,7 +294,7 @@ export const UsersView: React.FC = () => {
           <div className="bg-white rounded-xl p-5 max-w-md w-full shadow-2xl border border-slate-200 space-y-4">
             <div className="flex items-center justify-between border-b border-slate-200 pb-2">
               <h3 className="text-sm font-bold text-slate-900">
-                {editingUser ? 'Modificar Usuario Institucional' : 'Registrar Nuevo Usuario'}
+                {editingUser ? 'Modificar Usuario' : 'Registrar Nuevo Usuario'}
               </h3>
               <button
                 type="button"

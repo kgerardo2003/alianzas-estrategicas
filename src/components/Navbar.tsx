@@ -85,7 +85,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenMobileMenu }) => {
         return <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-amber-100 text-amber-800">AUDITOR</span>;
       case 'usuario_estandar':
       default:
-        return <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-blue-100 text-blue-800">OPERADOR</span>;
+        return <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-red-100 text-red-800">OPERADOR</span>;
     }
   };
 
@@ -118,11 +118,11 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenMobileMenu }) => {
         </button>
 
         <div>
-          <h1 className="text-base sm:text-lg font-bold text-slate-800 font-sans tracking-tight">
-            Gestión de Adquisiciones Institucionales
+          <h1 className="text-base sm:text-lg font-black text-slate-900 font-sans tracking-tight">
+            Alianzas Estratégicas - FIRME
           </h1>
-          <p className="hidden sm:block text-[11px] text-slate-500 font-medium">
-            Gerencia de Informática y Telecomunicaciones • Organismo Judicial
+          <p className="hidden sm:block text-[11px] text-red-800 font-semibold">
+            Sistema de Control de Proyectos • Cartera Ministerial de Guatemala
           </p>
         </div>
       </div>
@@ -253,7 +253,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenMobileMenu }) => {
                 className="w-full text-left px-3 py-2 hover:bg-slate-50 flex items-center justify-between"
               >
                 <span className="font-semibold text-slate-900">Usuario Estándar</span>
-                <span className="text-[9px] bg-blue-100 text-blue-800 px-1.5 py-0.5 rounded font-bold">Operador</span>
+                <span className="text-[9px] bg-red-100 text-red-800 px-1.5 py-0.5 rounded font-bold">Operador</span>
               </button>
             </div>
           )}
@@ -398,7 +398,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenMobileMenu }) => {
                     onClick={() => { setIsChangePasswordModalOpen(true); setIsUserMenuOpen(false); }}
                     className="w-full text-left px-3 py-1.5 rounded-lg text-slate-700 hover:bg-slate-100 flex items-center gap-2 font-semibold transition-colors cursor-pointer"
                   >
-                    <KeyRound className="w-3.5 h-3.5 text-blue-600" />
+                    <KeyRound className="w-3.5 h-3.5 text-red-700" />
                     <span>Cambiar Contraseña</span>
                   </button>
 

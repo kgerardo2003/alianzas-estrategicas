@@ -426,17 +426,15 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   // Tema del sistema
   const [theme, setThemeState] = useState<SystemThemeId>(() => {
     const saved = localStorage.getItem(STORAGE_KEYS.THEME);
-    if (saved && (saved === 'azul_persia_acero' || saved === 'slate_ambar' || saved === 'azul_judicial' || saved === 'grafito_esmeralda')) {
-      if (saved === 'slate_ambar') {
-        localStorage.setItem(STORAGE_KEYS.THEME, 'azul_persia_acero');
-        return 'azul_persia_acero';
-      }
+    if (saved && (saved === 'firme_carmesi' || saved === 'firme_blanco' || saved === 'slate_ambar' || saved === 'grafito_esmeralda')) {
       return saved as SystemThemeId;
     }
-    return 'azul_persia_acero';
+    // Migrar automáticamente temas azules anteriores al tema oficial FIRME
+    localStorage.setItem(STORAGE_KEYS.THEME, 'firme_carmesi');
+    return 'firme_carmesi';
   });
 
-  const themeConfig = SYSTEM_THEMES[theme] || SYSTEM_THEMES.azul_persia_acero;
+  const themeConfig = SYSTEM_THEMES[theme] || SYSTEM_THEMES.firme_carmesi;
 
   const setTheme = (newTheme: SystemThemeId) => {
     setThemeState(newTheme);

@@ -30,7 +30,7 @@ export const LoginModal: React.FC = () => {
     setSuccessMsg('');
 
     if (!username.trim()) {
-      setErrorMsg('Por favor ingrese su usuario institucional.');
+      setErrorMsg('Por favor ingrese su usuario.');
       return;
     }
 
@@ -107,7 +107,7 @@ export const LoginModal: React.FC = () => {
             {/* Input Usuario */}
             <div>
               <label className="block text-xs font-bold text-slate-700 mb-1">
-                Usuario Institucional
+                Usuario
               </label>
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
@@ -119,7 +119,7 @@ export const LoginModal: React.FC = () => {
                   value={username}
                   onChange={(e) => setUsername(e.target.value)}
                   placeholder="Ingrese su usuario"
-                  className="w-full pl-9 pr-3 py-2 text-xs border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#4682b4] focus:border-[#4682b4]"
+                  className="w-full pl-9 pr-3 py-2 text-xs border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-600 focus:border-red-600"
                   required
                 />
               </div>
@@ -140,7 +140,7 @@ export const LoginModal: React.FC = () => {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="Contraseña"
-                  className="w-full pl-9 pr-10 py-2 text-xs border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#4682b4] focus:border-[#4682b4]"
+                  className="w-full pl-9 pr-10 py-2 text-xs border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-600 focus:border-red-600"
                 />
                 <button
                   type="button"
